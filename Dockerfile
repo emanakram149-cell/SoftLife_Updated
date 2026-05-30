@@ -17,14 +17,13 @@ WORKDIR /var/www/html
 COPY . .
 
 # Correct folder permissions set karein
-RUN mkdir -p /var/www/html/web/app \
- && chown -R www-data:www-data /var/www/html/web/app \
- && chmod -R 775 /var/www/html/web/app
+RUN chown -R www-data:www-data /var/www/html \
+ && chmod -R 775 /var/www/html
 
 # Dependencies clean-load karein
 RUN composer install --no-dev --optimize-autoloader
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/web
+ENV APACHE_DOCUMENT_ROOT /var/www/html
 
 # Apache configuration files update karein
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" /etc/apache2/sites-available/*.conf && \
