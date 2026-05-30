@@ -1,31 +1,23 @@
 FROM php:8.2-apache
 
-# Install required PHP extensions for MySQL Database Connection
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# 1. Database connection ke liye zaroori PHP extensions install karein
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Enable Apache rewrite module (For .htaccess rules to work)
-RUN a2enmod rewrite
-
-# Set working directory to standard Apache root
+# 2. Apache directory set karein
 WORKDIR /var/www/html
 
-# Copy all your PHP/CSS/JS project files directly to /var/www/html
-COPY . /var/www/html
+# 3. Apne project ka saara code copy karein
+COPY . .
 
-# Set the correct permissions for standard Apache user
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# 4. Standard permission set karein
+RUN chown -R www-data:www-data /var/www/html
 
-# Expose standard port 80
+# 5. Apache rewrite rule enable karein (required for .htaccess)
+RUN a2enmod rewrite
+
+# Port expose karein
 EXPOSE 80
 
-# Run standard Apache foreground command
-CMD ["apache2-foreground"]
+# 6. CRITICAL FIX to prevent "More than one MPM loaded" error on Railway
+# Yeh command dynamically conflicting mpm_event ko disable karegi aur mpm_prefork ko enable karegi
+CMD expr "`a2query -m`" : ".*mpm_prefork.*" || (a2dismod mpm_event && a2enmod mpm_prefork) && apache2-foreground
