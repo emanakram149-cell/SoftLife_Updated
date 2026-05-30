@@ -9,8 +9,6 @@ php_value session.cookie_samesite "Lax"
 # Pretty URLs (optional)
 RewriteEngine On
 RewriteCond %{HTTPS} off
-# Force HTTPS on Railway (remove if testing locally)
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Block direct access to includes and config
 RewriteRule ^includes/ - [F,L]
