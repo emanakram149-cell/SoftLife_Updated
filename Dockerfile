@@ -23,4 +23,9 @@ RUN echo '<Directory /var/www/html>\n  AllowOverride All\n  Options -Indexes\n  
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+# Entrypoint script copy aur execute permissions set karein
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# custom entrypoint run karein
+ENTRYPOINT ["/entrypoint.sh"]
