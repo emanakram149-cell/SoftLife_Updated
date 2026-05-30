@@ -1,32 +1,31 @@
 FROM php:8.2-apache
 
-# 1. Install required system packages and PHP extensions for MySQL database
+# Install required PHP extensions for MySQL Database Connection
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
     zip \
     unzip \
-    git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd mysqli pdo pdo_mysql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 2. Set working directory to standard Apache document root
+# Enable Apache rewrite module (For .htaccess rules to work)
+RUN a2enmod rewrite
+
+# Set working directory to standard Apache root
 WORKDIR /var/www/html
 
-# 3. Copy all repository files directly into the container
-COPY . .
+# Copy all your PHP/CSS/JS project files directly to /var/www/html
+COPY . /var/www/html
 
-# 4. Set the correct permissions so Apache can read and execute the PHP files
+# Set the correct permissions for standard Apache user
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# 5. Enable Apache Rewrite Module (for clean URLs and redirects)
-RUN a2enmod rewrite
-
-# 6. Expose default Web port
+# Expose standard port 80
 EXPOSE 80
 
-# 7. Start standard official Apache server in the foreground
+# Run standard Apache foreground command
 CMD ["apache2-foreground"]
