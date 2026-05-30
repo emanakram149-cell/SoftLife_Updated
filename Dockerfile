@@ -1,20 +1,10 @@
-FROM php:8.2-apache
-
-RUN a2enmod rewrite headers
+FROM php:8.2-cli
 
 RUN docker-php-ext-install pdo pdo_mysql
 
-COPY . /var/www/html/
+COPY . /app/
 
-RUN chown -R www-data:www-data /var/www/html
-
-RUN echo '<Directory /var/www/html>
-    AllowOverride All
-    Options -Indexes
-    Require all granted
-</Directory>' \
-    > /etc/apache2/conf-available/softlife.conf \
-    && a2enconf softlife
+WORKDIR /app
 
 EXPOSE 80
 
