@@ -1,23 +1,22 @@
 FROM php:8.2-apache
 
-# Disable conflicting MPMs and force-enable mpm_prefork (Fixes Railway crash)
-RUN a2dismod mpm_event || true \
-    && a2dismod mpm_worker || true \
+# 1. Conflicting MPM modules ko disable karein aur mpm_prefork ko force enable karein
+RUN a2dismod mpm_event mpm_worker || true \
     && a2enmod mpm_prefork
 
-# Enable Apache mod_rewrite for clean URLs
+# 2. Apache mod_rewrite enable karein (.htaccess support ke liye)
 RUN a2enmod rewrite
 
-# Install PHP extensions
+# 3. PHP extensions install karein
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Copy all project files
+# 4. Project files copy karein
 COPY . /var/www/html/
 
-# Set permissions
+# 5. Correct file permissions set karein
 RUN chown -R www-data:www-data /var/www/html
 
-# Apache config: allow .htaccess overrides
+# 6. Apache configuration (Allow .htaccess overrides)
 RUN echo '<Directory /var/www/html>\n  AllowOverride All\n  Options -Indexes\n  Require all granted\n</Directory>' \
     > /etc/apache2/conf-available/softlife.conf \
     && a2enconf softlife
