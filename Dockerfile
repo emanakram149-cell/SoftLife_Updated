@@ -17,8 +17,9 @@ WORKDIR /var/www/html
 COPY . .
 
 # Correct folder permissions set karein
-RUN chown -R www-data:www-data /var/www/html/web/app \
-    && chmod -R 775 /var/www/html/web/app
+RUN mkdir -p /var/www/html/web/app \
+ && chown -R www-data:www-data /var/www/html/web/app \
+ && chmod -R 775 /var/www/html/web/app
 
 # Dependencies clean-load karein
 RUN composer install --no-dev --optimize-autoloader
