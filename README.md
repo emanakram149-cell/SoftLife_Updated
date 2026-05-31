@@ -140,3 +140,4 @@ SoftLife_Updated/
     ├── session_guard.php ← requireLogin() + redirectIfLoggedIn()
     └── head.php       ← Shared HTML <head>
 ```
+# SoftLife - Personal Growth Tracker
