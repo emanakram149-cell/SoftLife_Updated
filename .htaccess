@@ -1,0 +1,29 @@
+# SoftLife – Apache URL config
+Options -Indexes
+
+# PHP session security
+php_flag session.cookie_httponly on
+php_flag session.use_strict_mode on
+php_value session.cookie_samesite "Lax"
+
+# Pretty URLs (optional)
+RewriteEngine On
+RewriteCond %{HTTPS} off
+# Force HTTPS on Railway (remove if testing locally)
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Block direct access to includes and config
+RewriteRule ^includes/ - [F,L]
+RewriteRule ^config/ - [F,L]
+
+# Default page
+DirectoryIndex index.php
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com fonts.gstatic.com cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: *; frame-src 'self' www.google.com;"
+</IfModule>

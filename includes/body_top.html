@@ -1,0 +1,94 @@
+</head>
+<body id="bodyEl">
+
+<!-- SCREEN READER SKIP LINK -->
+<a href="#main-content" class="skip-link">⌨️ Skip to main content</a>
+
+<!-- =====================================================
+     CLOCK BAR
+===================================================== -->
+<div id="clockBar" role="banner" aria-label="Clock and navigation bar">
+  <div class="cb-left">
+    <span style="font-size:1rem;">🌱</span>
+    <strong style="font-family:'DM Serif Display',serif;font-size:.92rem;">SoftLife</strong>
+    <time id="liveClock" aria-live="polite" aria-label="Current time"></time>
+    <span id="liveDate" style="opacity:.8;"></span>
+  </div>
+  <div class="cb-right">
+    <div class="cb-search-wrap" role="search">
+      <span class="cb-search-icon">🔍</span>
+      <input type="text" id="cbSearchInput" placeholder="Search pages, features…"
+             aria-label="Quick search" autocomplete="off"
+             oninput="runCbSearch(this.value)"
+             onkeydown="if(event.key==='Enter'){runCbSearch(this.value)}"
+             onfocus="document.querySelector('.cb-search-wrap').classList.add('focused')"
+             onblur="document.querySelector('.cb-search-wrap').classList.remove('focused')">
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     COOKIE CONSENT
+===================================================== -->
+<div id="cookieBanner" role="dialog" aria-label="Cookie consent" aria-live="polite">
+  <div class="cookie-text">
+    <h4>🍪 We use cookies</h4>
+    <p>SoftLife uses cookies to save your theme, accessibility settings, and session preferences. No data is sold to advertisers.</p>
+  </div>
+  <div class="cookie-btns">
+    <button class="btn-cookie-accept" onclick="acceptCookies()" aria-label="Accept all cookies">Accept All</button>
+    <button class="btn-cookie-manage" onclick="manageCookies()" aria-label="Manage cookie preferences">Manage</button>
+  </div>
+</div>
+
+<!-- =====================================================
+     SEARCH OVERLAY
+===================================================== -->
+<div id="searchOverlay" role="dialog" aria-modal="true" aria-label="Global search" onclick="handleSearchOverlayClick(event)">
+  <div class="search-box" role="search">
+    <div class="search-inner">
+      <span aria-hidden="true" style="font-size:1.1rem;">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search pages, habits, features…"
+             aria-label="Search SoftLife" oninput="filterSearch(this.value)" autocomplete="off">
+      <button class="search-close" onclick="closeSearch()" aria-label="Close search">✕</button>
+    </div>
+    <div id="searchResults" class="search-results" role="listbox" aria-label="Search results"></div>
+  </div>
+</div>
+
+<!-- =====================================================
+     SCROLL BUTTONS
+===================================================== -->
+<button id="scrollToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top" title="Page Up">↑</button>
+<button id="scrollToBottom" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})" aria-label="Scroll to bottom" title="Page Down">↓</button>
+
+<!-- =====================================================
+     ACCESSIBILITY TOOLBAR
+===================================================== -->
+<div id="a11yBar" role="toolbar" aria-label="Accessibility tools">
+  <button class="a11y-btn" onclick="toggleTTS()" id="ttsBtn" aria-label="Toggle screen reader / text-to-speech" title="Read page aloud" aria-pressed="false">🔊</button>
+  <button class="a11y-btn" onclick="toggleContrast()" id="contrastBtn" aria-label="Toggle high contrast" title="High Contrast" aria-pressed="false">🌗</button>
+  <button class="a11y-btn" onclick="toggleDark()" id="darkBtn" aria-label="Toggle dark mode" title="Dark Mode">🌙</button>
+  <button class="a11y-btn" onclick="increaseText()" aria-label="Increase text size" title="Larger Text">A+</button>
+  <button class="a11y-btn" onclick="decreaseText()" aria-label="Decrease text size" title="Smaller Text">A−</button>
+  <button class="a11y-btn" onclick="toggleA11yPanel()" aria-label="Accessibility help" title="Help">♿</button>
+</div>
+
+<div id="a11yPanel" role="dialog" aria-label="Accessibility information">
+  <h4>♿ Accessibility Help</h4>
+  <ul>
+    <li>⌨️ <b>Tab</b> — navigate elements</li>
+    <li>↵ <b>Enter / Space</b> — activate</li>
+    <li>🔍 <b>Ctrl+K</b> — global search</li>
+    <li>🔊 <b>TTS</b> — page read-aloud</li>
+    <li>⬆⬇ <b>Page Up/Down</b> buttons</li>
+    <li>🌙 <b>Dark mode</b> toggle</li>
+    <li>🌗 <b>High contrast</b> toggle</li>
+    <li>📢 Live alerts for screen readers</li>
+  </ul>
+  <button class="close-panel" onclick="toggleA11yPanel()">Close</button>
+</div>
+
+<!-- =====================================================
+     ============ HOME PAGE ============
+===================================================== -->
